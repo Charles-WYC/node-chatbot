@@ -25,7 +25,7 @@ module.exports = {
     connection : function(server){
          var sio = require("socket.io")(server);
          sio.sockets.on("connection", function(socket) {
-            
+            console.log('connect');
             var flag = 0;
             // config items
             var pollInterval = 500;  // 查询发送问题间隔
