@@ -12,7 +12,7 @@ app.get('/', function (req, res) {
    res.sendFile(path.join(__dirname, "//index.html") );  // 前端
 });
 
-var server = app.listen(8888, function () {
+var server = app.listen(80, function () {
  
 var host = server.address().address
 var port = server.address().port
