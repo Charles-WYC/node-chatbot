@@ -1,0 +1,16 @@
+{
+  "author": "Zhe Wang",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.3",
+    "fs": "0.0.1-security",
+    "node-uuid": "^1.4.8",
+    "open": "0.0.5",
+    "path": "^0.12.7",
+    "request": "^2.81.0",
+    "request-promise": "^4.1.1",
+    "stream": "0.0.2",
+    "swagger-client": "^2.1.18",
+    "xmlbuilder": "^9.0.1"
+  }
+}
