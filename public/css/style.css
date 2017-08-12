@@ -47,8 +47,8 @@ Chat
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  width: 300px;
-  height: 80vh;
+  width: 370px;
+  height: 120vh;
   max-height: 500px;
   z-index: 2;
   overflow: hidden;

@@ -2,12 +2,13 @@
 var express = require('express');
 
 var path = require('path');
+var favicon = require('serve-favicon');
 var common = require('./utils/common.js');
 var app = express();
 
 app.use(express.static('node_modules'));
 app.use(express.static('public'));
-
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.get('/', function (req, res) {
    res.sendFile(path.join(__dirname, "//index.html") );  // 前端
 });

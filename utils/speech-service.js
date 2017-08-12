@@ -1,5 +1,5 @@
-var uuid = require('node-uuid'),
-    request = require('request');
+var uuid = require('uuid');
+var request = require('request');
 var fs = require('fs');
 var xmlbuilder = require('xmlbuilder');
 var SPEECH_API_KEY = 'ca4a5e57009c470fab236774e1c81b0d';
@@ -9,6 +9,7 @@ var TOKEN_EXPIRY_IN_SECONDS = 400;
 
 var speechApiAccessToken = '';
 
+// bing speech api
 exports.getTextFromAudioStream = function (stream) {
     return new Promise(
         function (resolve, reject) {
@@ -132,53 +133,6 @@ function streamToText(stream, resolve, reject) {
     }));
 }
 
-// custom speech api
-exports.customStreamToText = function(stream) {
-    return new Promise(
-        function (resolve, reject) {
-            var apiKey = '9fbe1d10df014d888bfa4659dbb07196';
-            request.post({
-                url: 'https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken',
-                headers: {
-                    'Ocp-Apim-Subscription-Key' : apiKey
-                }
-            }, function (err, resp, access_token) {
-                if (err || resp.statusCode != 200) {
-                    console.log(err, resp.body);
-                } else {
-                    try {
-                        var speechRequestData = {
-                            url: 'https://5e6e04d2d0b44d14bf23d2491569390c.api.cris.ai/cris/speech/query',
-                            headers: {
-                                'Authorization': access_token,
-                                'content-type': 'audio/wav; codec=\'audio/pcm\'; samplerate=16000'
-                            }
-                        };
-                        stream.pipe(request.post(speechRequestData, function (error, response, body) {
-                            if (error) {
-                                reject(error);
-                            } else if (response.statusCode !== 200) {
-                                reject(body);
-                            } else {
-                                resolve(JSON.parse(body).results);
-                                // results = JSON.parse(body).results;
-                                // if(results.length>0){
-                                //     console.log(JSON.parse(body).results[0].name);
-                                //     console.log(JSON.parse(body).results[0].confidence);                           
-                                
-                                // }else{
-                                //     console.log('null');
-                                // }
-                            }
-                        }));
-                    } catch (e) {
-                        console.log(e.message);
-                    }
-                }
-    });
-    });
-}
-
 function textToStream(msg, resolve, reject){
      var ssml_doc = xmlbuilder.create('speak')
         .att('version', '1.0')
@@ -214,3 +168,135 @@ function textToStream(msg, resolve, reject){
             }
         });   
 }
+
+// custom speech api
+exports.customStreamToText = function(stream) {
+    return new Promise(
+        function (resolve, reject) {
+            var apiKey = '9fbe1d10df014d888bfa4659dbb07196';
+            request.post({
+                url: 'https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken',
+                headers: {
+                    'Ocp-Apim-Subscription-Key' : apiKey
+                }
+            }, function (err, resp, access_token) {
+                if (err || resp.statusCode != 200) {
+                    console.log(err, resp.body);
+                } else {
+                    try {
+                        var speechRequestData = {
+                            url: 'https://7629b0300d254e419411c9ff3db3cc4f.api.cris.ai/cris/speech/query',
+                            headers: {
+                                'Authorization': access_token,
+                                'content-type': 'audio/wav; codec=\'audio/pcm\'; samplerate=16000'
+                            }
+                        };
+                        stream.pipe(request.post(speechRequestData, function (error, response, body) {
+                            if (error) {
+                                reject(error);
+                            } else if (response.statusCode !== 200) {
+                                reject(body);
+                            } else {
+                                resolve(JSON.parse(body).results);
+                                // results = JSON.parse(body).results;
+                                // if(results.length>0){
+                                //     console.log(JSON.parse(body).results[0].name);
+                                //     console.log(JSON.parse(body).results[0].confidence);                           
+                                
+                                // }else{
+                                //     console.log('null');
+                                // }
+                            }
+                        }));
+                    } catch (e) {
+                        console.log(e.message);
+                    }
+                }
+    });
+    });
+}
+
+// speaker recognition api
+var profileIds = '60c07a63-c9eb-4ea7-b302-f3817cb2019b,cba6dd25-5d0f-480a-b159-88f50d553fa5,df622f1e-4c25-44d6-bc55-bc708c4b45a5'
+
+var names ={
+    '60c07a63-c9eb-4ea7-b302-f3817cb2019b': '王哲',
+    'cba6dd25-5d0f-480a-b159-88f50d553fa5': '张霄远',
+    'df622f1e-4c25-44d6-bc55-bc708c4b45a5': '超超'
+};
+var speaker_apiKey = '5be52522bae74b69babd27d5a79733a4';
+exports.speaker_identification = function(stream) {
+    return new Promise(
+        function (resolve, reject) {
+            var speechApiUrl = [
+                'https://westus.api.cognitive.microsoft.com/spid/v1.0/identify?identificationProfileIds=' + profileIds,
+                'shortAudio=true'
+            ].join('&');
+            try {
+                var speechRequestData = {
+                    url: speechApiUrl,
+                    headers: {
+                        'Ocp-Apim-Subscription-Key' : speaker_apiKey,
+                        'content-type': 'application/octet-stream'
+                    }
+                };
+                stream.pipe(request.post(speechRequestData, function (error, response, body) {
+                    if (error) {
+                        reject(error);
+                    } else if (response.statusCode == 202) {
+                        var operationId = response.headers['operation-location'];
+                        //console.log(operationId);
+                        var flag = 0;
+                        var operationInterval = setInterval(function(){
+                            flag = flag + 1;
+                            console.log('尝试读取识别结果: ',flag);
+                            speaker_getOperationStatus(operationId,function(data){
+                                if(data.hasOwnProperty('processingResult')){
+                                    var id = data['processingResult']["identifiedProfileId"];
+                                    var confidence = data['processingResult']["confidence"];
+                                    console.log(id,confidence);
+                                    if(names.hasOwnProperty(id)){
+                                        resolve(names[id]);
+                                    }
+                                    else{
+                                        resolve('未知');
+                                    }
+                                    clearInterval(operationInterval);
+                                }
+                            });
+
+                        },3000);
+
+                       var operationTimeout = setTimeout(function(){
+                            clearInterval(operationInterval);
+                        },10000); 
+                    } else {
+                        reject(body);
+                    }
+                }));
+            } catch (e) {
+                console.log(e.message);
+            }
+        });
+}
+
+function speaker_getOperationStatus(operationId,callback){
+    var requestData = {
+        url: operationId,
+        headers: {
+            'Ocp-Apim-Subscription-Key': speaker_apiKey
+        }
+    };
+
+    request.get(requestData, function (error, response, body) {
+        if (error) {
+            console.error(error);
+        } else if (response.statusCode !== 200) {
+            console.error(body);
+        } else {
+            callback(JSON.parse(body));
+        }
+    });
+}
+
+module.exports.speaker_getOperationStatus = speaker_getOperationStatus;

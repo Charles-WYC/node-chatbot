@@ -25,7 +25,7 @@ module.exports = {
     connection : function(server){
          var sio = require("socket.io")(server);
          sio.sockets.on("connection", function(socket) {
-            console.log('connect');
+            
             var flag = 0;
             // config items
             var pollInterval = 500;  // 查询发送问题间隔
@@ -40,7 +40,7 @@ module.exports = {
             var directLineSpecUrl = 'https://docs.botframework.com/en-us/restapi/directline3/swagger.json';
 
             var questions = new Array();
-            //var socket = null;   // socket 变成全局变量故自动共享socket了。。。现在使用闭包
+            var speakerName = '未知'
 
             var directLineClient = rp(directLineSpecUrl)
                 .then(function (spec) {
@@ -81,6 +81,7 @@ module.exports = {
                         } 
                         else {
                             question = questions.shift();
+                            question = question + "#" + speakerName;
                             console.log("发送问题： "+ question);
                             
                             waitAnswer = setTimeout(function(){
@@ -123,10 +124,12 @@ module.exports = {
                 }, pollInterval);
             }
 
+            var activityDict = new Object();
+
             // send answer
             function printMessages(activities) {
             
-                if (activities && activities.length && flag!=0) {
+                if (activities && activities.length ){//&& flag!=0) {
                     // ignore own messages
                     //console.dir(activities);
                     activities = activities.filter(function (m) { return m.from.id != directLineClientName });
@@ -134,20 +137,51 @@ module.exports = {
                     if (activities.length) {
                         for(var i =0; i<activities.length;i++){
                             var activity = activities[i];
-                            if (activity.text && activity.inputHint == 'acceptingInput') {
-                                socket.emit('send answer',activity.text);
-                                speechService.getAudioStreamFromText(activity.text)
-                                    .then(function (blob) {
-                                        socket.emit('send audio',blob);
-                                    })
-                                    .catch(function (error) {
-                                        session.send('Oops! Something went wrong. Try again later.');
-                                        console.error(error);
-                                    });
-                            console.log('anwser',activity.text);
-                                flag = 0;
-                                clearTimeout(waitAnswer);
+                            if(activityDict.hasOwnProperty(activity.id)){
+                                continue;
+                            }else{
+                                activityDict[activity.id] = 0;
+                                setTimeout(function(){  // 暂存activity数据5s，避免接受重复对话
+                                    delete activityDict[activity.id];
+                                },5000);
                             }
+                            //console.log(activity.id);
+                            //console.log(activity.inputHint);
+                                if(activity.text){
+                                    socket.emit('send answer',activity.text);
+                                    speechService.getAudioStreamFromText(activity.text)
+                                        .then(function (blob) {
+                                            socket.emit('send audio',blob);
+                                        })
+                                        .catch(function (error) {
+                                            session.send('Oops! Something went wrong. Try again later.');
+                                            console.error(error);
+                                        });
+                                    console.log('answer',activity.text);
+                                    flag = 0;
+                                    clearTimeout(waitAnswer);
+                                }
+
+                                if(activity.attachments){
+                                    if(activity.attachments.length==1){
+                                        switch (activity.attachments[0].contentType) {
+                                            case "application/vnd.microsoft.card.hero":
+                                                //console.log('application/vnd.microsoft.card.hero')
+                                                socket.emit('send hero card', activity.attachments[0].content);
+                                                break;
+                                            case "application/vnd.microsoft.card.audio":
+                                                //console.log('application/vnd.microsoft.card.audio')
+                                                socket.emit('send audio card', activity.attachments[0].content);
+                                                break;
+                                        }
+                                    }else {
+                                        //console.log('cards')
+                                        socket.emit('send cards',activity);
+                                    }
+                                    flag = 0;
+                                    clearTimeout(waitAnswer);
+
+                            } 
                         }
                     }
                 }
@@ -164,12 +198,13 @@ module.exports = {
                 // // var buffer = new Buffer( new Uint8Array(ab) );
                 // console.log(arrayBuffer );
                 // socket.emit('send audio',arrayBuffer );
-    
-                var stream = bufferToStream(blob);
-                var stream1 = bufferToStream(blob);
+                console.log(blob);
+                var stream = bufferToStream(blob);  // for custom speech api
+                var stream1 = bufferToStream(blob); // for bing speech api
+                var stream2 = bufferToStream(blob); // for speaker recognition api
                 // custom speech api
                 speechService.customStreamToText(stream)
-                        .then(function(results) {
+                        .then(function(results) {                            
                             var text = results[0].name;
                             text=text.substring(0,text.length-1); //删除最后的句号 
                             console.log('置信度: ',results[0].confidence);
@@ -178,54 +213,38 @@ module.exports = {
                             questions.push(text);
                         })
                         .catch(function (error) {
-                            session.send('Oops! Something went wrong. Try again later.');
+                            //session.send('Oops! Something went wrong. Try again later.');
                             console.error(error);
                         });
+                // bing speech api
+                // speechService.getTextFromAudioStream(stream1)
+                //         .then(function (text) {
+                //             console.log('默认语音识别: ',text);
+                //             //socket.emit('get text',text);
+                //             //questions.push(text);
+                //         })
+                //         .catch(function (error) {
+                //             //session.send('Oops! Something went wrong. Try again later.');
+                //             console.error(error);
+                //         });
 
-                speechService.getTextFromAudioStream(stream1)
-                        .then(function (text) {
-                            console.log('默认语音识别: ',text);
-                            //socket.emit('get text',text);
-                            //questions.push(text);
-                        })
-                        .catch(function (error) {
-                            session.send('Oops! Something went wrong. Try again later.');
-                            console.error(error);
-                        });
+                // speaker recognition api
+                speechService.speaker_identification(stream2)
+                    .then(function (name) {
+                        console.log('识别说话人: ',name);
+                        if(name!='未知'){
+                            speakerName = name;
+                        }
+                        console.log(name);
+                        // socket.emit('get text',name);
+                        //questions.push(text);
+                    })
+                    .catch(function (error) {
+                        //session.send('Oops! Something went wrong. Try again later.');
+                        console.error(error);
+                    });
                
             });
             });
-
-        // socket = sio.listen(server);
-        // socket.on('connection',function(socket){ // connection 监听 默认事件
-        //     console.log('客户端建立连接');
-        //     // 接收文本问题
-        //     socket.on('get question',function(data){
-        //         console.log(data);
-        //         questions.push(data);
-        //     });
-        //     // 接收音频问题
-        //     socket.on('get audio',function(blob){
-        //         // var arrayBuffer = new Uint8Array(blob).buffer;
-        //         // // var buffer = new Buffer( new Uint8Array(ab) );
-        //         // console.log(arrayBuffer );
-        //         // socket.emit('send audio',arrayBuffer );
-    
-        //         var stream = bufferToStream(blob);
-
-        //         console.log('get blob');
-        //         speechService.getTextFromAudioStream(stream)
-        //                 .then(function (text) {
-        //                     console.log(text);
-        //                     socket.emit('get text',text);
-        //                     questions.push(text);
-        //                 })
-        //                 .catch(function (error) {
-        //                     session.send('Oops! Something went wrong. Try again later.');
-        //                     console.error(error);
-        //                 });
-               
-        //     });
-        //     });
     }
 }
