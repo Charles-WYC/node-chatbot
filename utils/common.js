@@ -201,6 +201,7 @@ module.exports = {
                 var stream = bufferToStream(blob);  // for custom speech api
                 var stream1 = bufferToStream(blob); // for bing speech api
                 var stream2 = bufferToStream(blob); // for speaker recognition api
+                console.log('get data');
                 // custom speech api
                 speechService.customStreamToText(stream)
                         .then(function(results) {                            
