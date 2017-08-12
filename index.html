@@ -98,16 +98,19 @@ Hope you like it :)
             recorder.clear();
         }
         function recorderClick(button) {
+          console.log('eeg');
             if(recorder==null) return;
             if(getAudioFlag == false){
               recorder.record();
               $("#recoderImage").attr('src','image/audio_on.svg');
               getAudioFlag = true;
+              console.log('eeg');
             }
             else{
               recorder.stop();            
               recorder && recorder.exportWAV(function(blob) {
                   // socket.emit('get audio',blob);
+                  console.log('eeg');
                   var url = URL.createObjectURL(blob);
                   resampleEmit(url,16000);
               });
