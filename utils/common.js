@@ -198,7 +198,6 @@ module.exports = {
                 // // var buffer = new Buffer( new Uint8Array(ab) );
                 // console.log(arrayBuffer );
                 // socket.emit('send audio',arrayBuffer );
-                console.log(blob);
                 var stream = bufferToStream(blob);  // for custom speech api
                 var stream1 = bufferToStream(blob); // for bing speech api
                 var stream2 = bufferToStream(blob); // for speaker recognition api
@@ -235,9 +234,6 @@ module.exports = {
                         if(name!='未知'){
                             speakerName = name;
                         }
-                        console.log(name);
-                        // socket.emit('get text',name);
-                        //questions.push(text);
                     })
                     .catch(function (error) {
                         //session.send('Oops! Something went wrong. Try again later.');
