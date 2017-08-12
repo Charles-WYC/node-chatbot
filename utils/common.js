@@ -31,7 +31,7 @@ module.exports = {
             var pollInterval = 500;  // 查询发送问题间隔
             var sendInterval = 200;   // 查询答案响应间隔
 
-            var waitTimeout = 30000;  // 若问题30s未回答，自动停止等待问题答案
+            var waitTimeout = 10000;  // 若问题10s未回答，自动停止等待问题答案
 
             var waitAnswer = null;
 

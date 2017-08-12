@@ -79,7 +79,7 @@ function sendMap(startAddress, endAddress){
   console.log(startAddress,endAddress);
   mapNum = Math.ceil(Math.random()*1000);
   mapId = "map_"+mapNum;
-  $('<div class="message new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure><div id="'+mapId+'" style="height: 200px; width:200px; border-radius:10px;"></div></div>').appendTo($('.mCSB_container')).addClass('new');
+  $('<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure><div id="'+mapId+'" style="height: 200px; width:200px; border-radius:10px;"></div></div>').appendTo($('.mCSB_container')).addClass('new');
   setDate();
   newMap(mapId, startAddress, endAddress);
   updateScrollbar();
@@ -93,32 +93,36 @@ function CardButtonClick_AskQ(question){
 function getHeroCard(content){
   var CardContainer = '<div class="ac-container" style="padding: 0px; box-sizing: border-box; background-color: rgba(0, 0, 0, 0);">';
   var intervalDiv = '<div style="height: 8px;"></div>';
-  console.log(content.images)
+  //console.log(content.images)
   for(var i = 0;i<content.images.length;i++){
     var image = content.images[i];
-    console.log(image);
+    //console.log(image);
     var imageSrc = image.url;
     var imageDiv = '<div class="ac-image" style="display: flex; box-sizing: border-box; justify-content: flex-start; align-items: flex-start;"><img style="width: 100%; max-height: 100%;" src="'+imageSrc+'"></div>';
     CardContainer = CardContainer + imageDiv + intervalDiv;
   }
-
   var titleDiv = '<div style="text-align: left; color: rgb(0, 0, 0); line-height: 19.95px; font-family: "Segoe UI",sans-serif; font-size: 15px; font-weight: 700; white-space: nowrap; box-sizing: border-box;"><p style="width: 100%; overflow: hidden; margin-top: 0px; margin-bottom: 0px; text-overflow: ellipsis;">'+content.title+'</p></div>';
-  var subTitleDiv = '<div style="text-align: left; color: rgb(128, 140, 149); line-height: 17.29px; font-family: "Segoe UI",sans-serif; font-size: 13px; font-weight: 400; word-wrap: break-word; box-sizing: border-box;"><p style="width: 100%; margin-top: 0px; margin-bottom: 0px;">'+content.subtitle+'</p></div>';
-  var textDiv = '<div style="text-align: left; color: rgb(0, 0, 0); line-height: 17.29px; font-family: "Segoe UI",sans-serif; font-size: 13px; font-weight: 400; word-wrap: break-word; box-sizing: border-box;"><p style="width: 100%; margin-top: 0px; margin-bottom: 0px;">'+content.text+'</p></div>';
+  var subTitleDiv = '';
+  if(content.subtitle)
+    subTitleDiv = '<div style="text-align: left; color: rgb(128, 140, 149); line-height: 17.29px; font-family: "Segoe UI",sans-serif; font-size: 13px; font-weight: 400; word-wrap: break-word; box-sizing: border-box;"><p style="width: 100%; margin-top: 0px; margin-bottom: 0px;">'+content.subtitle+'</p></div>';
+  var textDiv = '';
+  if(content.text)
+    textDiv = '<div style="text-align: left; color: rgb(0, 0, 0); line-height: 17.29px; font-family: "Segoe UI",sans-serif; font-size: 13px; font-weight: 400; word-wrap: break-word; box-sizing: border-box;"><p style="width: 100%; margin-top: 0px; margin-bottom: 0px;">'+content.text+'</p></div>';
   CardContainer =  CardContainer + titleDiv + subTitleDiv + intervalDiv + textDiv +'</div>';
   CardContainer = '<div class="ac-container" style="padding: 8px; box-sizing: border-box; background-color: rgba(0, 0, 0, 0);">' + CardContainer;
-  
-  for(var i=0;i<content.buttons.length;i++){
-    var button = content.buttons[i];
-    console.log(button.type)
-    var buttonDiv;
-    if(button.type == "openUrl"){
-      var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="window.open(\'' + button.value + '\')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+  if(content.buttons){
+    for(var i=0;i<content.buttons.length;i++){
+      var button = content.buttons[i];
+      //console.log(button.type)
+      var buttonDiv;
+      if(button.type == "openUrl"){
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="window.open(\'' + button.value + '\')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+      }
+      else{
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ(' + button.value + ')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+      }
+      CardContainer = CardContainer + intervalDiv + buttonDiv; 
     }
-    else{
-      var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ(' + button.value + ')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
-    }
-    CardContainer = CardContainer + intervalDiv + buttonDiv; 
   }
   CardContainer = '<div class="wc-card wc-adaptive-card hero" style="width: 200px;">' + CardContainer +'</div></div>';
   return CardContainer;
@@ -131,29 +135,31 @@ function getAudioCard(content){
   var textDiv = '<div style="text-align: left; color: rgb(0, 0, 0); line-height: 17.29px; font-family: "Segoe UI",sans-serif; font-size: 13px; font-weight: 400; word-wrap: break-word; box-sizing: border-box;"><p style="width: 100%; margin-top: 0px; margin-bottom: 0px;">'+content.text+'</p></div>';
   var CardContainer = '<div class="ac-container" style="padding: 0px; box-sizing: border-box; background-color: rgba(0, 0, 0, 0);">'+ titleDiv + subTitleDiv + intervalDiv + textDiv +'</div>';
   CardContainer = '<div class="ac-container" style="padding: 8px; box-sizing: border-box; background-color: rgba(0, 0, 0, 0);">' + CardContainer;
-  for(var i=0;i<content.buttons.length;i++){
-    var buttonDiv;
-    var button = content.buttons[i];
-    if(button.type == "openUrl"){
-      var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="window.open(\'' + button.value + '\')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+  if(content.buttons){
+    for(var i=0;i<content.buttons.length;i++){
+      var buttonDiv;
+      var button = content.buttons[i];
+      if(button.type == "openUrl"){
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="window.open(\'' + button.value + '\')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+      }
+      else{
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ(' + button.value + ')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+      }
+      CardContainer = CardContainer + intervalDiv + buttonDiv; 
     }
-    else{
-      var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ(' + button.value + ')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
-    }
-    CardContainer = CardContainer + intervalDiv + buttonDiv; 
   }
   CardContainer = CardContainer + '</div';
-  var audioDiv = '<div class="non-adaptive-content"><audio src="'+content.media[0].url+'" controls="" type="audio"></audio></div>'
+  var audioDiv = '<div class="non-adaptive-content"><audio src="'+content.media[0].url+'" controls="" type="audio" style="width: 100%;"></audio></div>'
   CardContainer = '<div class="wc-card wc-adaptive-card audio" style="width: 200px;">' + audioDiv + CardContainer +'</div>';
   return CardContainer;
 }
 
 // 当Bot返回结果为Card时
 socket.on('send hero card', function(content){
-  console.log(content)
+  //console.log(content)
   var CardContainer = getHeroCard(content);
   CardContainer = '<div class="wc-list">' + CardContainer + '</div>';
-  var bubble = '<div class="message new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure>' + CardContainer + '</div>';
+  var bubble = '<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure>' + CardContainer + '</div>';
 
   $(bubble).appendTo($('.mCSB_container')).addClass('new');  
   setDate();
@@ -164,7 +170,7 @@ socket.on('send hero card', function(content){
 socket.on('send audio card', function(content){
   var CardContainer = getAudioCard(content);
   CardContainer = '<div class="wc-list">' + CardContainer +'</div>';
-  var bubble = '<div class="message new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure>' + CardContainer + '</div>';
+  var bubble = '<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure>' + CardContainer + '</div>';
   $(bubble).appendTo($('.mCSB_container')).addClass('new');  
   setDate();
   updateScrollbar();
@@ -173,10 +179,10 @@ socket.on('send audio card', function(content){
 
 socket.on('send cards', function(activity){
   var attachments = activity.attachments;
-  console.log(attachments)
+  //console.log(attachments)
   var lis = '';
   for(var i=0;i<attachments.length;i++){
-    console.log(i);
+    //console.log(i);
     var attachment = attachments[i];
     var CardContainer;
     if(attachment.contentType == "application/vnd.microsoft.card.audio"){
@@ -192,7 +198,7 @@ socket.on('send cards', function(activity){
   }
   var carouselDiv = '<div class="wc-carousel" style="width: 270px;"><div class="wc-hscroll-outer"><div class="wc-hscroll" style="margin-bottom: -12px;"><ul>' + lis + '</ul></div></div></div>';
 
-  var bubble = '<div class="message new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure>' + carouselDiv + '</div>';
+  var bubble = '<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure>' + carouselDiv + '</div>';
   $(bubble).appendTo($('.mCSB_container')).addClass('new');  
   setDate();
   updateScrollbar();
@@ -210,12 +216,12 @@ socket.on('send answer',function(msg){
   }
   else{
     //console.log(msg);
-    $('<div class="message loading new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure><span></span></div>').appendTo($('.mCSB_container'));
+    $('<div class="message loading new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure><span></span></div>').appendTo($('.mCSB_container'));
     updateScrollbar();
 
     setTimeout(function() {
       $('.message.loading').remove();
-      $('<div class="message new"><figure class="avatar"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg" /></figure>' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
+      $('<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure>' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
       setDate();
       updateScrollbar();
       i++;

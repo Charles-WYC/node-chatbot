@@ -1,6 +1,6 @@
 /* reset */
 body .wc-app, .wc-app button, .wc-app input, .wc-app textarea {
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Noto Sans", "Noto Sans CJK SC", sans-serif;
   font-size: 15px; }
 
 .wc-app button {
@@ -207,7 +207,7 @@ body .wc-app, .wc-app button, .wc-app input, .wc-app textarea {
   .wc-card button {
     background-color: transparent;
     color: #3a96dd;
-    min-height: 32px;
+    min-height: 50px;
     width: 100%;
     padding: 0 16px; }
   .wc-card button:hover {
