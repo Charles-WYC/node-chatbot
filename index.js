@@ -12,8 +12,11 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.get('/', function (req, res) {
    res.sendFile(path.join(__dirname, "//index.html") );  // 前端
 });
-app.get('/index_bot.html', function (req, res) {
-   res.sendFile(path.join(__dirname, "//index_bot.html") );  // 前端
+app.get('/bot_small.html', function (req, res) {
+   res.sendFile(path.join(__dirname, "//bot_small.html") );  // 前端
+});
+app.get('/bot_large.html', function (req, res) {
+   res.sendFile(path.join(__dirname, "//bot_large.html") );  // 前端
 });
 var server = app.listen(80, function () {
  

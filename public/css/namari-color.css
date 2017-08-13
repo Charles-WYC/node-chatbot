@@ -22,27 +22,27 @@ body {
 /* Default Link Color */
 
 a, .la-ball-triangle-path {
-    color:#11ebf8;
+    color:#01baff;
 }
 
 a:hover, #header.nav-solid nav a:hover {
-    color:#11ebf8;
+    color:#01baff;
 }
 
 /* Default Icon Color */
 
 .icon i {
-    color:#11ebf8;
+    color:#01baff;
 }
 
 /* Border Color */
 
 #banner .section-heading:before, .testimonial.classic footer:before {
-    background: #11ebf8;
+    background: #01baff;
 }
 
 .pricing-block-content:hover {
-    border-color:#11ebf8;
+    border-color:#01baff;
 }
 
 
@@ -68,8 +68,8 @@ a:hover, #header.nav-solid nav a:hover {
 /* Navigation Active State */
 
 #header.nav-solid .active {
-    color: #11ebf8;
-    border-color: #11ebf8;
+    color: #01baff;
+    border-color: #01baff;
 }    
 
 
@@ -82,7 +82,7 @@ a:hover, #header.nav-solid nav a:hover {
 /* Primary Background and Text Colors */
 
 .primary-color, .featured .pricing {
-    background-color:#11ebf8;
+    background-color:#01baff;
 }
 
 .primary-color, .primary-color .section-title, .primary-color .section-subtitle, .featured .pricing, .featured .pricing p {
@@ -90,7 +90,7 @@ a:hover, #header.nav-solid nav a:hover {
 }
 
 .section-heading h2:after {
-    background:#11ebf8;
+    background:#01baff;
     content:"";
     display:block;
     width:30px;
@@ -124,7 +124,7 @@ a:hover, #header.nav-solid nav a:hover {
 /* Banner Background and Text Colors */
 
 #banner {
-    background: url("../images/banner-images/banner-image-1.jpg") no-repeat center top;
+    background: url("../images/banner-images/banner-image-1.gif") no-repeat center top;
     background-size:cover;
 }
 
@@ -135,7 +135,7 @@ a:hover, #header.nav-solid nav a:hover {
 
 
 body {
-    font-family: "Noto Sans", "Noto Sans CJK JP", sans-serif;
+    font-family: "Noto Sans", sans-serif;
     font-size:15px;
     font-weight:normal;
     color:#111;
@@ -197,7 +197,7 @@ body {
 /* Testimonial */
 
 .testimonial q {
-  font-family: "Noto Sans", "Noto Sans CJK CS", sans-serif;
+  font-family: "Noto Sans", sans-serif;
     font-size: 17px; 
     font-weight:300;
 }
@@ -279,8 +279,8 @@ h6 {
 /* Button Hover Color */
 
 .button:hover,  input[type="submit"]:hover {
-    border-color:#d2b356;
-    color:#d2b356;
+    border-color:#01baff;
+    color:#01baff;
 }
 
 
@@ -306,8 +306,8 @@ h6 {
 /* Button Hover Color */
 
 #banner .button:hover {
-    color:#d2b356;
-    border-color:#d2b356;
+    color:#01baff;
+    border-color:#01baff;
 }
 
 
@@ -316,7 +316,7 @@ h6 {
 /*------------------------------------------------------------------------------------------*/
 
 #landing-footer, #landing-footer p, #landing-footer a {
-  font-family: "Noto Sans", "Noto Sans CJK CS", sans-serif;
+    font-family: "Noto Sans", "Noto Sans CJK CS", sans-serif;
     font-size:12px;
     font-weight:normal;
     color:#999;

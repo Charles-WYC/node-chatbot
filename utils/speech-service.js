@@ -217,12 +217,13 @@ exports.customStreamToText = function(stream) {
 }
 
 // speaker recognition api
-var profileIds = '60c07a63-c9eb-4ea7-b302-f3817cb2019b,cba6dd25-5d0f-480a-b159-88f50d553fa5,df622f1e-4c25-44d6-bc55-bc708c4b45a5'
+var profileIds = '60c07a63-c9eb-4ea7-b302-f3817cb2019b,cba6dd25-5d0f-480a-b159-88f50d553fa5,df622f1e-4c25-44d6-bc55-bc708c4b45a5,bb23215c-2ed5-44b0-9b5f-d1ab1daeb85f'
 
 var names ={
     '60c07a63-c9eb-4ea7-b302-f3817cb2019b': '王哲',
     'cba6dd25-5d0f-480a-b159-88f50d553fa5': '张霄远',
-    'df622f1e-4c25-44d6-bc55-bc708c4b45a5': '超超'
+    'df622f1e-4c25-44d6-bc55-bc708c4b45a5': '超超',
+	'bb23215c-2ed5-44b0-9b5f-d1ab1daeb85f': '容嘉'
 };
 var speaker_apiKey = '5be52522bae74b69babd27d5a79733a4';
 exports.speaker_identification = function(stream) {
