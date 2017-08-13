@@ -38,6 +38,7 @@ function insertMessage() {
   $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
   setDate();
   $('.message-input').val(null);
+  $('<div class="message loading new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure><span></span></div>').appendTo($('.mCSB_container'));
   updateScrollbar();
   // socket.emit('get question',msg);
   // mapNum = Math.ceil(Math.random()*1000);
@@ -59,6 +60,10 @@ $(window).on('keydown', function(e) {
     insertMessage();
     return false;
   }
+  if (e.which == 32) {
+    recorderClick();
+    return false;
+  }
 });
 
 // 监听问题语音识别的结果
@@ -71,6 +76,7 @@ socket.on('get text',function(msg){
   $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
   setDate();
   $('.message-input').val(null);
+  $('<div class="message loading new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure><span></span></div>').appendTo($('.mCSB_container'));
   updateScrollbar();
 });
 
@@ -119,7 +125,7 @@ function getHeroCard(content){
         var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="window.open(\'' + button.value + '\')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
       }
       else{
-        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ(' + button.value + ')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ("' + button.value + '")" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
       }
       CardContainer = CardContainer + intervalDiv + buttonDiv; 
     }
@@ -143,7 +149,7 @@ function getAudioCard(content){
         var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="window.open(\'' + button.value + '\')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
       }
       else{
-        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ(' + button.value + ')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ("' + button.value + '")" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
       }
       CardContainer = CardContainer + intervalDiv + buttonDiv; 
     }
@@ -209,22 +215,19 @@ socket.on('send cards', function(activity){
 socket.on('send answer',function(msg){
   console.log(msg);
   if(msg.indexOf("From:")!=-1 && msg.indexOf(";To:")!=-1){
-    var addressArray = msg.split(";");
+    // var addressArray = msg.split(";");
     var startAddress = addressArray[0].substring(5,addressArray[0].length);
     var endAddress = addressArray[1].substring(3,addressArray[1].length);
+    // var startAddress = "上海交通大学思源门";
+    // var endAddress = "上海交通大学图书馆主馆";
     sendMap(startAddress,endAddress);
   }
   else{
     //console.log(msg);
-    $('<div class="message loading new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure><span></span></div>').appendTo($('.mCSB_container'));
+    $('.message.loading').remove();
+    $('<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure>' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
+    setDate();
     updateScrollbar();
-
-    setTimeout(function() {
-      $('.message.loading').remove();
-      $('<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure>' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
-      setDate();
-      updateScrollbar();
-      i++;
-    }, 1000 + (Math.random() * 20) * 100);
+    i++;
   }
 });

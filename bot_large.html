@@ -99,7 +99,7 @@ Hope you like it :)
             recorder.clear();
         }
 
-        function recorderClick(button) {
+        function recorderClick() {
             if(recorder==null) return;
             if(getAudioFlag == false){
               recorder.record();
@@ -116,7 +116,10 @@ Hope you like it :)
               getAudioFlag = false;
               recorder.clear();
               $("#recoderImage").attr('src','images/audio_off.svg');
-			}			  
+
+              $('<div class="message message-personal loading new"><span></span></div>').appendTo($('.mCSB_container'));
+              updateScrollbar();
+			      }			  
         }
         // 监听问题音频返回的结果
         socket.on('send audio',function(blob){
@@ -136,7 +139,7 @@ Hope you like it :)
     </div>
   </div>
   <div class="message-box">
-    <img id="recoderImage" onclick="recorderClick(this)" src="images/audio_off.svg" style="height: 25px; width: 25px"></img>
+    <img id="recoderImage" onclick="recorderClick()" src="images/audio_off.svg" style="height: 25px; width: 25px"></img>
     <textarea type="text" class="message-input" placeholder="输入文本或点击左侧按钮发送语音..."></textarea>
     <button type="submit" class="message-submit" onclick="">发送</button>
   </div>
