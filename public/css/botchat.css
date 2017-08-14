@@ -206,17 +206,19 @@ body .wc-app, .wc-app button, .wc-app input, .wc-app textarea {
     margin: 8px 8px 0 8px; }
   .wc-card button {
     background-color: transparent;
-    color: #3a96dd;
-    min-height: 50px;
+    color: #26a3fa;
+    min-height: 36px;
     width: 100%;
-    padding: 0 16px; }
+    border-color: #f4f2f2;
+    border-radius: 8px;
+    padding: 0 0px; }
   .wc-card button:hover {
     background-color: transparent;
-    border-color: #3a96dd;
-    color: #3a96dd; }
+    border-color: #26a3fa;
+    color: #26a3fa; }
   .wc-card button:active {
-    background-color: #3a96dd;
-    border-color: #3a96dd;
+    background-color: #26a3fa;
+    border-color: #26a3fa;
     color: #ffffff; }
   .wc-card.receipt table {
     border-collapse: collapse;
@@ -284,7 +286,7 @@ body .wc-app, .wc-app button, .wc-app input, .wc-app textarea {
 
 .wc-card {
   border: 1px solid #d2dde5;
-  width: 302px; }
+  width: 360px; }
 
 .wc-adaptive-card {
   width: 318px; }
@@ -355,7 +357,7 @@ body .wc-app, .wc-app button, .wc-app input, .wc-app textarea {
   .wc-carousel button.scroll.next {
     right: -16px; }
   .wc-carousel .wc-hscroll > ul {
-    margin-left: -4px; }
+    margin-left: -40px; }
   .wc-carousel .wc-hscroll > ul > li {
     padding: 0 4px; }
   .wc-carousel .wc-hscroll > ul > li:last-child {

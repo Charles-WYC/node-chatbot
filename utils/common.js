@@ -83,7 +83,7 @@ module.exports = {
                             question = questions.shift();
                             question = question + "#" + speakerName;
                             question = "demo"+question;
-                            
+                            //question = question;
                             console.log("发送问题： "+ question);
                             
                             waitAnswer = setTimeout(function(){

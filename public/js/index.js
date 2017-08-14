@@ -215,7 +215,7 @@ socket.on('send cards', function(activity){
 socket.on('send answer',function(msg){
   console.log(msg);
   if(msg.indexOf("From:")!=-1 && msg.indexOf(";To:")!=-1){
-    // var addressArray = msg.split(";");
+    var addressArray = msg.split(";");
     var startAddress = addressArray[0].substring(5,addressArray[0].length);
     var endAddress = addressArray[1].substring(3,addressArray[1].length);
     // var startAddress = "上海交通大学思源门";
