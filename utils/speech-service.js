@@ -185,7 +185,7 @@ exports.customStreamToText = function(stream) {
                 } else {
                     try {
                         var speechRequestData = {
-                            url: 'https://7629b0300d254e419411c9ff3db3cc4f.api.cris.ai/cris/speech/query',
+                            url: 'https://a3911e907073479a86d26857d0d295c4.api.cris.ai/cris/speech/query',
                             headers: {
                                 'Authorization': access_token,
                                 'content-type': 'audio/wav; codec=\'audio/pcm\'; samplerate=16000'
