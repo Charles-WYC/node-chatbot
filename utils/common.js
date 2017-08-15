@@ -82,8 +82,8 @@ module.exports = {
                         else {
                             question = questions.shift();
                             question = question + "#" + speakerName;
-                            question = "demo"+question;
-                           // question = question;
+                            //question = "demo"+question;
+                            question = question;
                             console.log("发送问题： "+ question);
                             
                             waitAnswer = setTimeout(function(){
