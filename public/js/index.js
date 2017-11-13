@@ -122,10 +122,10 @@ function getHeroCard(content){
       //console.log(button.type)
       var buttonDiv;
       if(button.type == "openUrl"){
-        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="window.open(\'' + button.value + '\')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick=window.open(\'' + button.value + '\') style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
       }
       else{
-        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ("' + button.value + '")" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick=CardButtonClick_AskQ("' + button.value + '") style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
       }
       CardContainer = CardContainer + intervalDiv + buttonDiv; 
     }
@@ -146,10 +146,10 @@ function getAudioCard(content){
       var buttonDiv;
       var button = content.buttons[i];
       if(button.type == "openUrl"){
-        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="window.open(\'' + button.value + '\')" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick=window.open(\'' + button.value + '\') style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
       }
       else{
-        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick="CardButtonClick_AskQ("' + button.value + '")" style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
+        var buttonDiv = '<div><div style="overflow: hidden;"><div style="display: flex; flex-direction: column; align-items: flex-start;"><button class="ac-pushButton" onclick=CardButtonClick_AskQ("' + button.value + '") style="flex:0 1 auto; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">'+button.title+'</button></div></div><div style="background-color: rgba(0, 0, 0, 0);"></div></div>';
       }
       CardContainer = CardContainer + intervalDiv + buttonDiv; 
     }
