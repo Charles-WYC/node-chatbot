@@ -35,7 +35,7 @@ module.exports = {
 
             var waitAnswer = null;
 
-            var directLineSecret = 'w1Sp253Z-Zo.cwA.ORg.lMGIiFXq9ps4AcPmJXI7u0nJu1BufwUgcA4Jdos6L6k';
+            var directLineSecret = 'S-AIoAMzC28.cwA.JTY._cnuEqtq9YlQBrsgJYAvymo62Y4G1Z6uNiyQhDbqNsY';
             var directLineClientName = socket.id;
             var directLineSpecUrl = 'https://docs.botframework.com/en-us/restapi/directline3/swagger.json';
 
@@ -201,16 +201,17 @@ module.exports = {
                 // console.log(arrayBuffer );
                 // socket.emit('send audio',arrayBuffer );
                 var stream = bufferToStream(blob);  // for custom speech api
-                var stream1 = bufferToStream(blob); // for bing speech api
-                var stream2 = bufferToStream(blob); // for speaker recognition api
+                // var stream1 = bufferToStream(blob); // for bing speech api
+                // var stream2 = bufferToStream(blob); // for speaker recognition api
                 console.log('get data');
                 // custom speech api
                 speechService.customStreamToText(stream)
-                        .then(function(results) {                            
-                            var text = results[0].name;
-                            text=text.substring(0,text.length-1); //删除最后的句号 
-                            console.log('置信度: ',results[0].confidence);
-                            console.log('自定义语音识别: ',text);
+                        .then(function(text) { 
+                            console.log(text);                             
+                            // var text = results[0].name;
+                            // text=text.substring(0,text.length-1); //删除最后的句号 
+                            // console.log('置信度: ',results[0].confidence);
+                            // console.log('自定义语音识别: ',text);
                             socket.emit('get text',text);
                             questions.push(text);
                         })
@@ -231,17 +232,17 @@ module.exports = {
                 //         });
 
                 // speaker recognition api
-                speechService.speaker_identification(stream2)
-                    .then(function (name) {
-                        console.log('识别说话人: ',name);
-                        if(name!='未知'){
-                            speakerName = name;
-                        }
-                    })
-                    .catch(function (error) {
-                        //session.send('Oops! Something went wrong. Try again later.');
-                        console.error(error);
-                    });
+                // speechService.speaker_identification(stream2)
+                //     .then(function (name) {
+                //         console.log('识别说话人: ',name);
+                //         if(name!='未知'){
+                //             speakerName = name;
+                //         }
+                //     })
+                //     .catch(function (error) {
+                //         //session.send('Oops! Something went wrong. Try again later.');
+                //         console.error(error);
+                //     });
                
             });
             });

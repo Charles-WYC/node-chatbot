@@ -2,7 +2,7 @@ var uuid = require('uuid');
 var request = require('request');
 var fs = require('fs');
 var xmlbuilder = require('xmlbuilder');
-var SPEECH_API_KEY = 'ca4a5e57009c470fab236774e1c81b0d';
+var SPEECH_API_KEY = 'c0ee1451e7724c1f8daa560af6aeb15a';
 
 // The token has an expiry time of 10 minutes https://www.microsoft.com/cognitive-services/en-us/Speech-api/documentation/API-Reference-REST/BingVoiceRecognition
 var TOKEN_EXPIRY_IN_SECONDS = 400;
@@ -173,7 +173,7 @@ function textToStream(msg, resolve, reject){
 exports.customStreamToText = function(stream) {
     return new Promise(
         function (resolve, reject) {
-            var apiKey = '9fbe1d10df014d888bfa4659dbb07196';
+            var apiKey = '30c1c1d52703423caae382340be3a45a';
             request.post({
                 url: 'https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken',
                 headers: {
@@ -185,7 +185,7 @@ exports.customStreamToText = function(stream) {
                 } else {
                     try {
                         var speechRequestData = {
-                            url: 'https://a3911e907073479a86d26857d0d295c4.api.cris.ai/cris/speech/query',
+                            url: 'https://25d551f31ea84d17b3d4e0c7d06b564b.api.cris.ai/speech/recognition/interactive/cognitiveservices/v1',
                             headers: {
                                 'Authorization': access_token,
                                 'content-type': 'audio/wav; codec=\'audio/pcm\'; samplerate=16000'
@@ -197,7 +197,7 @@ exports.customStreamToText = function(stream) {
                             } else if (response.statusCode !== 200) {
                                 reject(body);
                             } else {
-                                resolve(JSON.parse(body).results);
+                                resolve(JSON.parse(body).DisplayText);
                                 // results = JSON.parse(body).results;
                                 // if(results.length>0){
                                 //     console.log(JSON.parse(body).results[0].name);
