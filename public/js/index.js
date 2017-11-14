@@ -214,6 +214,7 @@ socket.on('send cards', function(activity){
 // 监听问题回答的结果
 socket.on('send answer',function(msg){
   console.log(msg);
+  $('.message.loading').remove();
   if(msg.indexOf("From:")!=-1 && msg.indexOf(";To:")!=-1){
     var addressArray = msg.split(";");
     var startAddress = addressArray[0].substring(5,addressArray[0].length);
