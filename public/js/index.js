@@ -163,6 +163,8 @@ function getAudioCard(content){
 // 当Bot返回结果为Card时
 socket.on('send hero card', function(content){
   //console.log(content)
+  $('.message.loading').remove();
+  console.log(msg);
   var CardContainer = getHeroCard(content);
   CardContainer = '<div class="wc-list">' + CardContainer + '</div>';
   var bubble = '<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure>' + CardContainer + '</div>';
@@ -174,6 +176,8 @@ socket.on('send hero card', function(content){
 });
 
 socket.on('send audio card', function(content){
+  $('.message.loading').remove();
+  console.log(msg);
   var CardContainer = getAudioCard(content);
   CardContainer = '<div class="wc-list">' + CardContainer +'</div>';
   var bubble = '<div class="message new"><figure class="avatar"><img src="https://c1.staticflickr.com/5/4331/36518609605_4ff8556cbb.jpg" /></figure>' + CardContainer + '</div>';
@@ -184,6 +188,7 @@ socket.on('send audio card', function(content){
 });
 
 socket.on('send cards', function(activity){
+  $('.message.loading').remove();
   var attachments = activity.attachments;
   //console.log(attachments)
   var lis = '';
